@@ -76,10 +76,30 @@ app.get("/users/:id", (req, res) => {
     }
   });
 
+  app.get("/users", (req, res) => {
+    const { name, job } = req.query;
+
+    if (name || job) {
+        let result = users.users_list;
+
+        if (name) {
+            result = result.filter((user) => user.name === name);
+        }
+
+        if (job) {
+            result = result.filter((user) => user.job === job);
+        }
+
+        res.send({ users_list: result });
+    } else {
+        res.send(users);
+    }
+});
+
 app.delete("/users/:id", (req, res) => {
     const id = req.params.id;
     const index = users.users_klist.findIndex((user) => user.id === id);
-    
+
     if (index !== -1) {
         users.users_list.splice(index, 1);
         res.send("User deleted");

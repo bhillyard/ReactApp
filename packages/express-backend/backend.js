@@ -49,7 +49,9 @@ const addUser = (user) => {
     return userWithId;
 };
 
-app.use(cors());
+app.use(cors({
+    methods: ['GET', 'POST', 'DELETE'], // Add 'DELETE' here
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -98,13 +100,12 @@ app.get("/users/:id", (req, res) => {
 
 app.delete("/users/:id", (req, res) => {
     const id = req.params.id;
-    const index = users.users_klist.findIndex((user) => user.id === id);
-
+    const index = users.users_list.findIndex((user) => user.id === id);
     if (index !== -1) {
         users.users_list.splice(index, 1);
-        res.send("User deleted");
+        res.status(204).send("User deleted");
     } else {
-        res.status(404).send("Resource not found.");
+        res.status(404).send("Resource not found");
     }
 })
 

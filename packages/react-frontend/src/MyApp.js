@@ -4,12 +4,27 @@ import Form from "./Form";
 
 function MyApp() {
   const [characters, setCharacters] = useState([]);
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
-    });
-  
-    setCharacters(updated);
+
+  function removeOneCharacter(id, index) {
+    // Make Http Delete request to the backend
+    fetch(`http://localhost:8000/users/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.status === 204) {
+          const updated = [...characters];
+          updated.splice(index, 1);
+          //characters.filter((character, i) => i !== index);
+          setCharacters(updated);
+        } else if (response.status === 404) {
+          console.log("Resource not found");
+        } else {
+          console.log("Unexpected status code:", response.status);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function updateList(person) {
@@ -38,7 +53,7 @@ function MyApp() {
   }
 
   function postUser(person) {
-    const promise = fetch("Http://localhost:8000/users", {
+    const promise = fetch("http://localhost:8000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

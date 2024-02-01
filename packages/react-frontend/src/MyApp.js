@@ -14,10 +14,16 @@ function MyApp() {
 
   function updateList(person) {
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
+      .then((response) => {
+        if (response.status === 201) {
+          setCharacters([...characters, person]);
+        } else {
+          console.log("Unexpected status code:", response.status);
+        }
+      })
       .catch((error) => {
         console.log(error);
-      })
+      });
   }
 
   function fetchUsers() {
@@ -26,12 +32,16 @@ function MyApp() {
   }
 
   function postUser(person) {
+    const randomId = Math.floor(Math.random() * 1000);
+
+    const userWithId = { id: randomId, ...person};
+
     const promise = fetch("Http://localhost:8000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(person),
+      body: JSON.stringify(userWithId),
     });
 
     return promise;

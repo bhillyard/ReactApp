@@ -61,7 +61,7 @@ app.get("/users", (req, res) => {
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
-    res.send();
+    res.send(201); //.json(addedUser)
   });
 
 app.get("/users/:id", (req, res) => {

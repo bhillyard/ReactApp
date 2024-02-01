@@ -43,8 +43,10 @@ const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
 const addUser = (user) => {
-    users["users_list"].push(user);
-    return user;
+    const randomId = Math.floor(Math.random() * 1000).toString();
+    const userWithId = { id: randomId, ...user };
+    users["users_list"].push(userWithId);
+    return userWithId;
 };
 
 app.use(cors());
@@ -60,8 +62,8 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.send(201); //.json(addedUser)
+    const addedUser = addUser(userToAdd);
+    res.status(201).json(addedUser);
   });
 
 app.get("/users/:id", (req, res) => {
@@ -73,6 +75,18 @@ app.get("/users/:id", (req, res) => {
       res.send(result);
     }
   });
+
+app.delete("/users/:id", (req, res) => {
+    const id = req.params.id;
+    const index = users.users_klist.findIndex((user) => user.id === id);
+    
+    if (index !== -1) {
+        users.users_list.splice(index, 1);
+        res.send("User deleted");
+    } else {
+        res.status(404).send("Resource not found.");
+    }
+})
 
 app.get("/users", (req, res) => {
     const name = req.query.name;

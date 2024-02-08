@@ -71,7 +71,6 @@ app.post("/users", (req, res) => {
     userServices.addUser(userToAdd)
     .then(addedUser => res.status(201).json(addedUser))
     .catch(err => res.status(500).send(err));
-
   });
 
 app.get("/users/:id", (req, res) => {
@@ -106,7 +105,9 @@ app.get("/users/:id", (req, res) => {
 });
 
 app.delete("/users/:id", (req, res) => {
-    const id = req.params.id;
+    const id = req.params._id;
+    console.log("trying to delete", id)
+    console.log(id)
     userServices.deleteUser(id)
       .then(() => res.status(204).send("User deleted"))
       .catch(err => res.status(500).send(err));

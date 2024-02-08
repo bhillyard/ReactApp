@@ -49,7 +49,7 @@ app.get("/users/:id", (req, res) => {
 });
 
 app.delete("/users/:id", (req, res) => {
-    const id = req.params._id;
+    const id = req.params.id;
     userServices.deleteUser(id)
       .then(() => res.status(204).send("User deleted"))
       .catch(err => res.status(500).send(err));

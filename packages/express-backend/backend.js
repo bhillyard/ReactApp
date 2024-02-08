@@ -5,66 +5,10 @@ import userServices from "./user-services.js";
 const app = express();
 const port = 8000;
 
-// const users = {
-//     users_list: [
-//         {
-//             id: "xyz789",
-//             name: "Charlie",
-//             job: "Janitor"
-//         },
-//         {
-//             id: "abc123",
-//             name: "Mac",
-//             job: "Bouncer"
-//         },
-//         {
-//             id: "ppp222",
-//             name: "Mac",
-//             job: "Professor"
-//         },
-//         {
-//             id: "yat999",
-//             name: "Dee",
-//             job: "Aspring actress"
-//         },
-//         {
-//             id: "zap555",
-//             name: "Dennis",
-//             job: "Bartender"
-//         }
-//     ]
-// };
-
-// const findUserByName = (name) => {
-//     return users["users_list"].filter(
-//         (user) => user["name"] === name
-//     );
-// };
-
-// const findUserById = (id) =>
-//   users["users_list"].find((user) => user["id"] === id);
-
-// const addUser = (user) => {
-//     const randomId = Math.floor(Math.random() * 1000).toString();
-//     const userWithId = { id: randomId, ...user };
-//     users["users_list"].push(userWithId);
-//     return userWithId;
-// };
-
 app.use(cors({
     methods: ['GET', 'POST', 'DELETE'], // Add 'DELETE' here
 }));
 app.use(express.json());
-
-// app.get("/", (req, res) => {
-//     res.send("Hello World!");
-// });
-
-// app.get("/users", (req, res) => {
-//     userServices.getUsers()
-//     .then(users => res.send(users))
-//     .catch(err => res.status(500).send(err));
-// });
 
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
@@ -106,8 +50,6 @@ app.get("/users/:id", (req, res) => {
 
 app.delete("/users/:id", (req, res) => {
     const id = req.params._id;
-    console.log("trying to delete", id)
-    console.log(id)
     userServices.deleteUser(id)
       .then(() => res.status(204).send("User deleted"))
       .catch(err => res.status(500).send(err));
